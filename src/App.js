@@ -12,7 +12,7 @@ function App() {
   const gcfEndpoint = process.env.REACT_APP_GCF_BACKEND_URL;
   const k8sEndpoint = process.env.REACT_APP_K8S_BACKEND_URL;
 
-  const [backendUrl, setBackendUrl] = useState("");
+  const [backendUrl, setBackendUrl] = useState(gcfEndpoint);
 
   const handleFileUpload = async () => {
     setStatus('Uploading files...');
@@ -57,7 +57,7 @@ function App() {
       <div>
         <label>
           <strong>Select Backend:</strong>
-          <select onChange={handleBackendChange}>
+          <select onChange={handleBackendChange} value={backendUrl}>
             <option value={gcfEndpoint}>Google Cloud Function</option>
             <option value={k8sEndpoint}>Google Kubernetes Engine</option>
           </select>
