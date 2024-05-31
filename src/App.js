@@ -8,14 +8,10 @@ function App() {
   const [imageUrl, setImageUrl] = useState('');
   const [resultUrl, setResultUrl] = useState('');
   const [status, setStatus] = useState('');
-
-  const gcfEndpoint = process.env.REACT_APP_GCF_BACKEND_URL;
-  const k8sEndpoint = process.env.REACT_APP_K8S_BACKEND_URL;
-
-  const [backendUrl, setBackendUrl] = useState(gcfEndpoint);
+  const [backendUrl, setBackendUrl] = useState('https://europe-west3-ass2vid.cloudfunctions.net/watermarkService'); // Use your HTTPS backend URL
 
   const handleFileUpload = async () => {
-    setStatus('Uploading files...');
+    setStatus('Uploading files.......');
     const formData = new FormData();
     formData.append('video', video);
     formData.append('image', image);
@@ -57,9 +53,9 @@ function App() {
       <div>
         <label>
           <strong>Select Backend:</strong>
-          <select onChange={handleBackendChange} value={backendUrl}>
-            <option value={gcfEndpoint}>Google Cloud Function</option>
-            <option value={k8sEndpoint}>Google Kubernetes Engine</option>
+          <select onChange={handleBackendChange}>
+            <option value="https://europe-west3-ass2vid.cloudfunctions.net/watermarkService">Google Cloud Function</option>
+            <option value="http://34.32.183.134">Google Kubernetes Engine</option>
           </select>
         </label>
       </div>
