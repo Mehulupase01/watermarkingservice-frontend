@@ -8,19 +8,18 @@ function App() {
   const [imageUrl, setImageUrl] = useState('');
   const [resultUrl, setResultUrl] = useState('');
   const [status, setStatus] = useState('');
-  const [backendUrl, setBackendUrl] = useState('https://europe-west3-ass2vid.cloudfunctions.net/watermarkService'); // Use your HTTPS backend URL
+  const [backendUrl, setBackendUrl] = useState('https://europe-west3-ass2vid.cloudfunctions.net/watermarkService'); // Update your backend URL
 
   const handleFileUpload = async () => {
-    setStatus('Uploading files.......');
+    setStatus('Uploading files...');
     const formData = new FormData();
     formData.append('video', video);
     formData.append('image', image);
 
     try {
-      const response = await axios.post(`${backendUrl}/api/watermark/upload`, formData);
-      console.log('Response:', response.data);
-      setResultUrl(response.data.url);
-      setStatus('Watermark applied successfully');
+      const uploadResponse = await axios.post(`${backendUrl}/api/watermark/upload`, formData);
+      console.log('Upload Response:', uploadResponse.data);
+      triggerWatermarkProcess({ videoPath: uploadResponse.data.videoPath, imagePath: uploadResponse.data.imagePath });
     } catch (error) {
       console.error('Error:', error);
       setStatus('Error uploading files');
@@ -30,16 +29,23 @@ function App() {
   const handleUrlUpload = async () => {
     setStatus('Uploading URLs...');
     try {
-      const response = await axios.post(`${backendUrl}/api/watermark/upload-url`, {
-        videoUrl,
-        imageUrl,
-      });
-      console.log('Response:', response.data);
-      setResultUrl(response.data.url);
-      setStatus('Watermark applied successfully');
+      const uploadResponse = await axios.post(`${backendUrl}/api/watermark/upload-url`, { videoUrl, imageUrl });
+      console.log('Upload Response:', uploadResponse.data);
+      triggerWatermarkProcess({ videoUrl, imageUrl });
     } catch (error) {
       console.error('Error:', error);
       setStatus('Error uploading URLs');
+    }
+  };
+
+  const triggerWatermarkProcess = async (data) => {
+    try {
+      const response = await axios.post(`${backendUrl}/trigger-watermark-process`, data);
+      setResultUrl(response.data.url);
+      setStatus('Watermark applied successfully');
+    } catch (error) {
+      console.error('Error triggering watermark process:', error);
+      setStatus('Failed to initiate watermark process');
     }
   };
 
