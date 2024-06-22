@@ -8,8 +8,7 @@ function App() {
   const [imageUrl, setImageUrl] = useState('');
   const [resultUrl, setResultUrl] = useState('');
   const [status, setStatus] = useState('');
-  const [backendUrl, setBackendUrl] = useState('https://europe-west3-ass2vid.cloudfunctions.net/watermarkService'); // Update your backend URL
-
+  const [backendUrl, setBackendUrl] = useState('https://europe-west3-ass2vid.cloudfunctions.net/watermarkService'); 
   const handleFileUpload = async () => {
     setStatus('Uploading files...');
     const formData = new FormData();
